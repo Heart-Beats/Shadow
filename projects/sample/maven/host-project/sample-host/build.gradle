@@ -1,11 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
-        applicationId "com.tencent.shadow.sample.host"
-        minSdkVersion 16
-        targetSdkVersion 28
+//        applicationId "com.tencent.shadow.sample.host"
+
+        applicationId "com.hl.baseproject.demo"
+
+        minSdkVersion 23
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -18,11 +22,24 @@ android {
             signingConfig.initWith(buildTypes.debug.signingConfig)
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+//    kotlinOptions {
+//        jvmTarget = '11'
+//    }
 }
 
 dependencies {
-    implementation project(':introduce-shadow-lib')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //    implementation project(':introduce-shadow-lib')
 
     //如果introduce-shadow-lib发布到Maven，在pom中写明此依赖，宿主就不用写这个依赖了。
-    implementation "com.tencent.shadow.dynamic:host:$shadow_version"
+//    implementation "com.tencent.shadow.dynamic:host:$shadow_version"
+
+    def hl_version = '0.5.8'
+    implementation "com.hl:shadow-init:$hl_version"
 }
