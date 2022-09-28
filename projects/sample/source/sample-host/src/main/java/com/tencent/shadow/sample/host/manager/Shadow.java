@@ -18,8 +18,11 @@
 
 package com.tencent.shadow.sample.host.manager;
 
+import android.content.Context;
+
 import com.tencent.shadow.dynamic.host.DynamicPluginManager;
 import com.tencent.shadow.dynamic.host.PluginManager;
+import com.tencent.shadow.dynamic.manager.MyMultiLoaderPluginManager;
 
 import java.io.File;
 
@@ -34,4 +37,7 @@ public class Shadow {
         return null;
     }
 
+    public static PluginManager getMultiPluginManager(Context context) {
+        return new MyMultiLoaderPluginManager(context);
+    }
 }

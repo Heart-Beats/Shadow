@@ -52,7 +52,8 @@ public class MainActivity extends Activity {
         ArrayAdapter<String> partKeysAdapter = new ArrayAdapter<>(this, R.layout.part_key_adapter);
         partKeysAdapter.addAll(
                 Constant.PART_KEY_PLUGIN_MAIN_APP,
-                Constant.PART_KEY_PLUGIN_ANOTHER_APP
+//                Constant.PART_KEY_PLUGIN_ANOTHER_APP,
+                "承建商协同"
         );
         partKeySpinner.setAdapter(partKeysAdapter);
 
@@ -72,7 +73,12 @@ public class MainActivity extends Activity {
                         break;
                     case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
                         intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
-                        ;
+
+                        break;
+                    case "承建商协同":
+                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, "cjsxt");
+                        break;
+                    default:
                         break;
                 }
 
@@ -82,7 +88,11 @@ public class MainActivity extends Activity {
                     case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
                         intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.splash.SplashActivity");
                         break;
-
+                    case "承建商协同":
+                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.youma.cjspro.PluginSplashActivity");
+                        break;
+                    default:
+                        break;
                 }
                 startActivity(intent);
             }

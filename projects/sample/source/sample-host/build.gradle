@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion project.COMPILE_SDK_VERSION
@@ -48,6 +49,18 @@ dependencies {
     implementation 'com.tencent.shadow.dynamic:dynamic-host'
     implementation project(':sample-constant')
     implementation project(':sample-host-lib')
+
+
+    implementation 'com.tencent.shadow.dynamic:dynamic-manager-multi-loader-ext'
+    implementation 'com.tencent.shadow.dynamic:dynamic-host-multi-loader-ext'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.0'
+
+    implementation 'com.tencent.shadow.dynamic:dynamic-manager'
+    implementation 'com.tencent.shadow.core:manager'
+    implementation 'com.tencent.shadow.dynamic:dynamic-loader'
+
+    compileOnly 'com.tencent.shadow.core:common'
+    compileOnly 'com.tencent.shadow.dynamic:dynamic-host'
 }
 
 def createCopyTask(projectName, buildType, name, apkName, inputFile, taskName) {

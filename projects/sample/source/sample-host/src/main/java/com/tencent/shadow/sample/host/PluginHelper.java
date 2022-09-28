@@ -43,6 +43,7 @@ public class PluginHelper {
     public File pluginManagerFile;
 
     public File pluginZipFile;
+    public File pluginZipFile2;
 
     public ExecutorService singlePool = Executors.newSingleThreadExecutor();
 
@@ -60,6 +61,8 @@ public class PluginHelper {
     public void init(Context context) {
         pluginManagerFile = new File(context.getFilesDir(), sPluginManagerName);
         pluginZipFile = new File(context.getFilesDir(), sPluginZip);
+
+        pluginZipFile2 = new File(context.getFilesDir(), "plugin-debug_2.zip");
 
         mContext = context.getApplicationContext();
 
@@ -79,6 +82,9 @@ public class PluginHelper {
 
             InputStream zip = mContext.getAssets().open(sPluginZip);
             FileUtils.copyInputStreamToFile(zip, pluginZipFile);
+
+            InputStream zip2 = mContext.getAssets().open("plugin-cjsxt-release.zip");
+            FileUtils.copyInputStreamToFile(zip2, pluginZipFile2);
 
         } catch (IOException e) {
             throw new RuntimeException("从assets中复制apk出错", e);

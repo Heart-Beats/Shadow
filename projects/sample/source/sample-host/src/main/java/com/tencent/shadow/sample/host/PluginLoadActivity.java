@@ -18,6 +18,8 @@
 
 package com.tencent.shadow.sample.host;
 
+import static com.tencent.shadow.sample.constant.Constant.PART_KEY_PLUGIN_BASE;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +28,9 @@ import android.view.ViewGroup;
 
 import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.sample.constant.Constant;
+import com.tencent.shadow.sample.host.manager.ShadowConstants;
+
+import java.io.File;
 
 
 public class PluginLoadActivity extends Activity {
@@ -54,18 +59,26 @@ public class PluginLoadActivity extends Activity {
                 HostApplication.getApp().loadPluginManager(PluginHelper.getInstance().pluginManagerFile);
 
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, PluginHelper.getInstance().pluginZipFile.getAbsolutePath());
-                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY));
-                bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME));
+//                bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, PluginHelper.getInstance().pluginZipFile.getAbsolutePath());
+//                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY));
+//                bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME));
+
+                String partKey = getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY);
+                File pluginFileZip = partKey.equals(PART_KEY_PLUGIN_BASE) ? PluginHelper.getInstance().pluginZipFile : PluginHelper.getInstance().pluginZipFile2;
+
+                bundle.putString(ShadowConstants.KEY_PLUGIN_ZIP_PATH, pluginFileZip.getAbsolutePath());
+                bundle.putString(ShadowConstants.KEY_PLUGIN_PART_KEY, partKey);
+                bundle.putString(ShadowConstants.KEY_CLASSNAME, getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME));
+                bundle.putLong(ShadowConstants.KEY_FROM_ID, ShadowConstants.FROM_ID_START_ACTIVITY);
 
                 HostApplication.getApp().getPluginManager()
-                        .enter(PluginLoadActivity.this, Constant.FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
+                        .enter(PluginLoadActivity.this, bundle.getLong(ShadowConstants.KEY_FROM_ID), bundle, new EnterCallback() {
                             @Override
                             public void onShowLoadingView(final View view) {
                                 mHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mViewGroup.addView(view);
+//                                        mViewGroup.addView(view);
                                     }
                                 });
                             }
@@ -87,7 +100,7 @@ public class PluginLoadActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        HostApplication.getApp().getPluginManager().enter(this, Constant.FROM_ID_CLOSE, null, null);
+//        HostApplication.getApp().getPluginManager().enter(this, Constant.FROM_ID_CLOSE, null, null);
         mViewGroup.removeAllViews();
     }
 }

@@ -82,8 +82,12 @@ public class HostApplication extends Application {
     }
 
     public void loadPluginManager(File apk) {
+//        if (mPluginManager == null) {
+//            mPluginManager = Shadow.getPluginManager(apk);
+//        }
+
         if (mPluginManager == null) {
-            mPluginManager = Shadow.getPluginManager(apk);
+            mPluginManager = Shadow.getMultiPluginManager(this);
         }
     }
 

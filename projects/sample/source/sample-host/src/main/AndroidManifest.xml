@@ -77,6 +77,44 @@
                 <action android:name="sample_host.manager.startPluginService" />
             </intent-filter>
         </receiver>
+
+
+        <service
+            android:name=".MyMultiLoaderPluginProcessService"
+            android:process=":pluginMulti" />
+
+        <activity
+            android:name="com.hl.my_runtime.PluginDefaultProxyActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:multiprocess="true"
+            android:process=":pluginMulti"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            tools:replace="android:process" />
+
+        <activity
+            android:name="com.hl.my_runtime.PluginSingleInstanceProxyActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
+            android:process=":pluginMulti"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            tools:replace="android:process" />
+
+        <activity
+            android:name="com.hl.my_runtime.PluginSingleTaskProxyActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:multiprocess="true"
+            android:process=":pluginMulti"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            tools:replace="android:process" />
     </application>
 
 </manifest>
