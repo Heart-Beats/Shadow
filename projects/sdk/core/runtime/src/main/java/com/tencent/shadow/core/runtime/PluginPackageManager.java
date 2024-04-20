@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
@@ -21,6 +22,8 @@ public interface PluginPackageManager {
     ProviderInfo getProviderInfo(ComponentName component, int flags);
 
     PackageInfo getPackageInfo(String packageName, int flags);
+
+    PackageInfo getPackageInfo(String packageName, PackageManager.PackageInfoFlags flags);
 
     ProviderInfo resolveContentProvider(String name, int flags);
 

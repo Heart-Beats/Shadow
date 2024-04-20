@@ -5,7 +5,8 @@ android {
 }
 
 def sdkPath = android.sdkDirectory
-def androidJarPath = new File(sdkPath, "platforms/${android.compileSdkVersion}/android.jar")
+//def androidJarPath = new File(sdkPath, "platforms/${android.compileSdkVersion}/android.jar")
+def androidJarPath = new File(sdkPath, "platforms/android-34/android.jar")
 
 if (!androidJarPath.exists()) {
     println("File $androidJarPath not exists!")

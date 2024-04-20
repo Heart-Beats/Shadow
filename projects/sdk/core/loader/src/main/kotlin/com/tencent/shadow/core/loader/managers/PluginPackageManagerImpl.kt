@@ -19,9 +19,18 @@
 package com.tencent.shadow.core.loader.managers
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.*
+import android.content.pm.ActivityInfo
+import android.content.pm.ApplicationInfo
+import android.content.pm.ComponentInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.content.pm.ProviderInfo
+import android.content.pm.ResolveInfo
+import android.content.pm.ServiceInfo
+import android.os.Build
 import com.tencent.shadow.core.runtime.PluginPackageManager
 
 @SuppressLint("WrongConstant")
@@ -39,6 +48,22 @@ internal class PluginPackageManagerImpl(
         }
 
     override fun getPackageInfo(packageName: String, flags: Int): PackageInfo? {
+        val hostPackageInfo = hostPackageManager.getPackageInfo(packageName, flags)
+        return if (packageName.isPlugin()) {
+            val packageInfo = hostPackageManager.getPackageArchiveInfo(pluginArchiveFilePath, flags)
+            if (packageInfo != null) {
+                packageInfo.applicationInfo = getPluginApplicationInfo(flags)
+                packageInfo.permissions = hostPackageInfo.permissions
+                packageInfo.requestedPermissions = hostPackageInfo.requestedPermissions
+            }
+            packageInfo
+        } else {
+            hostPackageInfo
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.TIRAMISU)
+    override fun getPackageInfo(packageName: String, flags: PackageManager.PackageInfoFlags): PackageInfo? {
         val hostPackageInfo = hostPackageManager.getPackageInfo(packageName, flags)
         return if (packageName.isPlugin()) {
             val packageInfo = hostPackageManager.getPackageArchiveInfo(pluginArchiveFilePath, flags)
@@ -191,6 +216,23 @@ internal class PluginPackageManagerImpl(
         val copy = ApplicationInfo(pluginApplicationInfoFromPluginManifest)
 
         val needMetaData = flags and PackageManager.GET_META_DATA != 0
+        if (needMetaData) {
+            val packageInfo = hostPackageManager.getPackageArchiveInfo(
+                pluginArchiveFilePath,
+                PackageManager.GET_META_DATA
+            )!!
+            val metaData = packageInfo.applicationInfo.metaData
+            copy.metaData = metaData
+        }
+
+        return copy
+    }
+
+    @TargetApi(Build.VERSION_CODES.TIRAMISU)
+    private fun getPluginApplicationInfo(flags: PackageManager.PackageInfoFlags): ApplicationInfo {
+        val copy = ApplicationInfo(pluginApplicationInfoFromPluginManifest)
+
+        val needMetaData = flags.value and PackageManager.GET_META_DATA.toLong() != 0L
         if (needMetaData) {
             val packageInfo = hostPackageManager.getPackageArchiveInfo(
                 pluginArchiveFilePath,
